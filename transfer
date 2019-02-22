@@ -1,0 +1,34 @@
+■Prepare packages we need 
+
+install.packages("httr")
+install.packages("rjson")
+library(httr)
+library(rjson)
+
+■Create transfer function
+
+getLatLng <- function(address){
+ 
+    urlData <- GET(paste0("https://maps.googleapis.com/maps/api/geocode/json?language=zh-TW&address=", URLencode(address),&key=輸入金鑰)) #輸入金鑰是將「輸入金鑰」四個字替換成Google API key
+    jsonResult <- rjson::fromJSON(rawToChar(urlData$content))
+    Sys.sleep(1)
+    if(jsonResult$status != "OK"){
+        print(paste0("Google geocode API Error, Reason:", jsonResult$error_message))
+        return("error")
+    }
+    print("LatLng Got")
+    lat <<- jsonResult$results[[1]]$geometry$location$lat
+    lng <<- jsonResult$results[[1]]$geometry$location$lng
+    
+    return(paste(lat, lng, sep=","))
+}
+
+■Load file
+
+address_data = read.csv("address.csv", stringsAsFactors=FALSE, header=FALSE)   #address.csv是儲存地址檔案
+
+■Begin transfer
+
+result <- address_data %>%
+    rowwise() %>%
+    mutate(LatLng = getLatLng(V1))
