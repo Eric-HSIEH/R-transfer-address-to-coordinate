@@ -32,3 +32,7 @@ address_data = read.csv("address.csv", stringsAsFactors=FALSE, header=FALSE)   #
 result <- address_data %>%
     rowwise() %>%
     mutate(LatLng = getLatLng(V1))
+
+■Source
+
+https://ithelp.ithome.com.tw/articles/10195227
