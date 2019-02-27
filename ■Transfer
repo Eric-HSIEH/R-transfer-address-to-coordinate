@@ -1,10 +1,13 @@
 ■Source
 https://ithelp.ithome.com.tw/articles/10195227
+https://bbs.csdn.net/topics/392312219
 
 ■Prepare packages we need 
 
 install.packages("httr")
 install.packages("rjson")
+install.packages("curl")
+library(curl)
 library(httr)
 library(rjson)
 
@@ -12,7 +15,7 @@ library(rjson)
 
 getLatLng <- function(address){
  
-    urlData <- GET(paste0("https://maps.googleapis.com/maps/api/geocode/json?language=zh-TW&address=", URLencode(address),&key=輸入金鑰)) #輸入金鑰是將「輸入金鑰」四個字替換成Google API key
+    urlData <- GET(paste0("https://maps.googleapis.com/maps/api/geocode/json?language=zh-TW&address=", curl_escape(address),&key=輸入金鑰)) #輸入金鑰是將「輸入金鑰」四個字替換成Google API key
     jsonResult <- rjson::fromJSON(rawToChar(urlData$content))
     Sys.sleep(1)
     if(jsonResult$status != "OK"){
