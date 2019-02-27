@@ -38,3 +38,35 @@ address_data = read.csv("address.csv", stringsAsFactors=FALSE, header=FALSE)   #
 result <- address_data %>%
     rowwise() %>%
     mutate(LatLng = getLatLng(V1))
+    
+—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+■後記
+
+ □目標
+ 
+  輸入中文地址，藉由R語言與google map API批次轉成座標。
+ 
+ □問題發現
+ 
+  上網搜尋網友已經寫好的程式碼(https://ithelp.ithome.com.tw/articles/10195227)，然經過測試出錯。
+  
+ □問題解析
+ 
+  1.經過直接帶入中文地址到(https://maps.googleapis.com/maps/api/geocode/json?language=zh-TW&address=輸入地址&key=輸入金鑰)中，
+    可正常轉成座標。
+    
+  2.複製1.的結果到R中，發現google map自行將中文地址轉碼後的代碼。
+  
+  3.將2的結果與原程式碼轉碼的函數URLencode()比較過後，發現兩者不同。
+  
+ □問題解決
+ 
+  1.上網搜尋R語言將中文轉成UTF-8的方法(https://bbs.csdn.net/topics/392312219)，找到可用curl::curl_escape()。
+  
+  2.將原程式碼URLencode()改成curl_escape()，執行後成功將中文地址轉成座標。
+  
+
+
+
+
+
