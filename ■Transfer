@@ -7,9 +7,11 @@ https://bbs.csdn.net/topics/392312219
 install.packages("httr")
 install.packages("rjson")
 install.packages("curl")
+install.packages("ggmap")
 library(curl)
 library(httr)
 library(rjson)
+library(ggmap)
 
 ■Create transfer function
 
@@ -38,6 +40,15 @@ address_data = read.csv("address.csv", stringsAsFactors=FALSE, header=FALSE)   #
 result <- address_data %>%
     rowwise() %>%
     mutate(LatLng = getLatLng(V1))
+    
+■ggmap
+
+ strseparate<-str_split(result$LatLng,pattern = ",")
+ strseparate2<-data.frame(Reduce(rbind,strseparate))
+ strseparate2$X1<-as.character(strseparate2$X1)
+ strseparate2$X2<-as.character(strseparate2$X2)
+ Lat<-strseparate2$X1
+ Lng<-strseparate2$X2
     
 —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 ■後記
